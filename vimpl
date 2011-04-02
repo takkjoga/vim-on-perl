@@ -1,0 +1,12 @@
+#!/opt/local/bin/perl
+use strict;
+use warnings;
+
+use VimPerl;
+use VimPerl::BootArguments;
+
+my $arguments = VimPerl::BootArguments->new_with_options();
+my $vim = VimPerl->new(arguments => $arguments);
+$vim->run;
+
+
