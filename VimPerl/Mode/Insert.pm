@@ -8,7 +8,7 @@ sub invoke {
     my ($self, $ch) = @_;
     if ($ch eq '') {
         # ESC to exit insert mode
-        $self->changeMode('Normal');
+        $self->change_mode('Normal');
     }
     else {
         addch($ch);

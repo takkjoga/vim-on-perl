@@ -5,10 +5,10 @@ with "VimPerl::Mode::Base";
 sub invoke {
     my ($self, $ch) = @_;
     if ($ch eq ':') {
-        $self->changeMode('Command');
+        $self->change_mode('Command');
     }
     elsif ($ch eq 'i') {
-        $self->changeMode('Insert');
+        $self->change_mode('Insert');
     }
     return 1;
 }

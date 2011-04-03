@@ -8,7 +8,7 @@ has parent => (
     isa => "VimPerl::ModeManager",
 );
 
-sub changeMode {
+sub change_mode {
     my ($self, $mode) = @_;
     my $mode_obj = $self->parent->mode_map->{$mode};
     $self->parent->mode($mode_obj);
