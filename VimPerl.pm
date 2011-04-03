@@ -25,25 +25,41 @@ sub run {
         exit;
     }
 
-    $self->init_locale;
-    $self->early_arg_scan;
-
+    # init screen
     initscr;
+    start_color;
+
+    # init settings
+    cbreak;
     clear;
     noecho;
+
+    my $mode = "normal";
     while (my $ch = getch) {
-        if ($ch eq 'q') {
-            endwin;
-            last;
+        if ($mode eq "insert") {
+            if ($ch eq '') {
+                # ESC to exit insert mode
+                $mode = "normal";
+            }
+            else {
+                addch($ch);
+            }
         }
-        addch($ch);
+        elsif ($mode eq "command") {
+            if ($ch eq 'q') {
+                endwin;
+                last;
+            }
+        }
+        elsif ($mode eq "normal") {
+            if ($ch eq ':') {
+                $mode = "command";
+            }
+            elsif ($ch eq 'i') {
+                $mode = "insert";
+            }
+        }
     }
-}
-
-sub init_locale {
-}
-
-sub early_arg_scan {
 }
 
 1;
