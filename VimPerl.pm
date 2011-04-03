@@ -1,9 +1,8 @@
 package VimPerl;
-use strict;
-use warnings;
-
 use Moose;
 use Curses;
+
+use VimPerl::ModeManager;
 
 my $VERSION = "VimPerl 0.0.1";
 
@@ -34,31 +33,42 @@ sub run {
     clear;
     noecho;
 
-    my $mode = "normal";
+    my $mode_manager;
+    eval {
+        $mode_manager = VimPerl::ModeManager->new;
+    };
+    if ($@) {
+        endwin;
+        die $@;
+    }
     while (my $ch = getch) {
-        if ($mode eq "insert") {
-            if ($ch eq '') {
-                # ESC to exit insert mode
-                $mode = "normal";
-            }
-            else {
-                addch($ch);
-            }
+        unless ($mode_manager->invoke($ch)) {
+            endwin;
+            last;
         }
-        elsif ($mode eq "command") {
-            if ($ch eq 'q') {
-                endwin;
-                last;
-            }
-        }
-        elsif ($mode eq "normal") {
-            if ($ch eq ':') {
-                $mode = "command";
-            }
-            elsif ($ch eq 'i') {
-                $mode = "insert";
-            }
-        }
+#        if ($mode eq "insert") {
+#            if ($ch eq '') {
+#                # ESC to exit insert mode
+#                $mode = "normal";
+#            }
+#            else {
+#                addch($ch);
+#            }
+#        }
+#        elsif ($mode eq "command") {
+#            if ($ch eq 'q') {
+#                endwin;
+#                last;
+#            }
+#        }
+#        elsif ($mode eq "normal") {
+#            if ($ch eq ':') {
+#                $mode = "command";
+#            }
+#            elsif ($ch eq 'i') {
+#                $mode = "insert";
+#            }
+#        }
     }
 }
 
